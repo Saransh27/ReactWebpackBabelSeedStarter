@@ -1,5 +1,16 @@
 const webpack = require('webpack');
 const path = require('path')
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+
+const settings = {
+    publicPath: path.join(__dirname, "public"),
+    srcPath: path.join(__dirname, "src")
+};
+
+function srcPathExtend(subpath) {
+    return path.join(settings.srcPath, subpath)
+}
 
 module.exports = {
   entry: './src/index.js',
@@ -34,11 +45,17 @@ module.exports = {
     tls: 'empty'
   },
   output: {
-    path: path.resolve(__dirname, '/public'),
+    path: settings.publicPath,
     filename: 'bundle.js'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new CleanWebpackPlugin([settings.publicPath], {
+      verbose: true
+  }),
+  new HtmlWebpackPlugin({
+      template: srcPathExtend("index.html")
+  })
   ],
   
   devServer: {

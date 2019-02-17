@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development"
+    "start": "webpack-dev-server --config ./webpack.config.js --mode development --open --hot",
+    "build": "webpack --config webpack.config.js --mode production"
   },
   "author": "Saransh",
   "license": "Private",
@@ -37,7 +38,7 @@
     "redux-devtools-extension": "^2.13.5",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.20.3",
-    "webpack": "^4.29.3",
+    "webpack": "^4.29.4",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"
   }
