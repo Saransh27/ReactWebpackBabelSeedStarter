@@ -37,6 +37,9 @@ module.exports = {
     ]
   },
   resolve: {
+    alias: {
+      APICONFIG: path.resolve(__dirname, 'config/api/' + 'production'),
+    },
     extensions: ['*', '.js', '.jsx']
   },
   node: {
