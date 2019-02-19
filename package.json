@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development --open --hot",
-    "build": "webpack --config webpack.config.js --mode production"
+    "start": "webpack-dev-server --config webpack.config.js --env.build_env development --env.mode development --open --hot",
+    "build:dev": "webpack --env.mode development --env.build_env development",
+    "build:qa": "webpack --env.mode development --env.build_env qa",
+    "build:uat": "webpack --env.mode production --env.build_env uat",
+    "build:prod": "webpack --env.mode production --env.build_env production"
   },
   "author": "Saransh",
   "license": "Private",
@@ -40,6 +43,7 @@
     "style-loader": "^0.20.3",
     "webpack": "^4.29.4",
     "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^3.1.14",
+    "webpack-merge": "^4.2.1"
   }
 }

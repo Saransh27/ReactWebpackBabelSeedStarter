@@ -4,16 +4,18 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 const settings = {
-    publicPath: path.join(__dirname, "public"),
-    srcPath: path.join(__dirname, "src")
+  publicPath: path.join(__dirname, "public"),
+  srcPath: path.join(__dirname, "src")
 };
 
 function srcPathExtend(subpath) {
-    return path.join(settings.srcPath, subpath)
+  return path.join(settings.srcPath, subpath)
 }
 
-module.exports = {
+module.exports = (env)=> {
+  return {
   entry: './src/index.js',
+  mode:env.mode,
   module: {
     rules: [
       {
@@ -30,15 +32,16 @@ module.exports = {
           }
         ]
       },
-      {
-        test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+       // CSS Files
+       {
+        test: /\.(css|scss)$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       }
     ]
   },
   resolve: {
     alias: {
-      APICONFIG: path.resolve(__dirname, 'config/api/' + 'production'),
+      APICONFIG: path.resolve(__dirname, `config/api/${env.build_env}` ),
     },
     extensions: ['*', '.js', '.jsx']
   },
@@ -68,5 +71,6 @@ module.exports = {
     port: 8080,
     open: true,
   },
+  }
 };
 
