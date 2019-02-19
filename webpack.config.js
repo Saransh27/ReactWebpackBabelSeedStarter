@@ -2,17 +2,19 @@ const webpack = require('webpack');
 const path = require('path')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const settings = {
   publicPath: path.join(__dirname, "public"),
   srcPath: path.join(__dirname, "src")
 };
-
+const outputBundleName = 'bundle';
 function srcPathExtend(subpath) {
   return path.join(settings.srcPath, subpath)
 }
 
 module.exports = (env)=> {
+  const devMode = env.mode ==='production'? false : true
   return {
   entry: './src/index.js',
   mode:env.mode,
@@ -35,7 +37,9 @@ module.exports = (env)=> {
        // CSS Files
        {
         test: /\.(css|scss)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+           'css-loader','sass-loader'],
       }
     ]
   },
@@ -52,7 +56,7 @@ module.exports = (env)=> {
   },
   output: {
     path: settings.publicPath,
-    filename: 'bundle.js'
+    filename: devMode ? `${outputBundleName}.js` : `${outputBundleName}.[hash].js`
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -61,6 +65,9 @@ module.exports = (env)=> {
   }),
   new HtmlWebpackPlugin({
       template: srcPathExtend("index.html")
+  }),
+  new MiniCssExtractPlugin({
+    filename: devMode ? `${outputBundleName}.css` : `style/${outputBundleName}.[hash].css`
   })
   ],
   

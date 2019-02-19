@@ -1,6 +1,7 @@
 import React from 'react';
 import 'core-js/es6/map';
 import 'core-js/es6/set';
+import './style.scss';
 import {CONFIGSERVICES} from 'APICONFIG'
 
 export default class App extends React.Component{
