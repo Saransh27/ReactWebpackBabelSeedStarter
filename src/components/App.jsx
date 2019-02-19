@@ -8,7 +8,7 @@ export default class App extends React.Component{
     render(){
         return(
             <div className="test-class">
-                Enjoy extending the Startup Kit!!!
+                Enjoy extending the Startup Kit!!!!
                 {CONFIGSERVICES.BASE_URL}
             </div>
             )

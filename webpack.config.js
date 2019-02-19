@@ -3,12 +3,14 @@ const path = require('path')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const settings = {
   publicPath: path.join(__dirname, "public"),
   srcPath: path.join(__dirname, "src")
 };
-const outputBundleName = 'bundle';
+const outputBundleNamePrefix = 'bundle';
 function srcPathExtend(subpath) {
   return path.join(settings.srcPath, subpath)
 }
@@ -16,6 +18,16 @@ function srcPathExtend(subpath) {
 module.exports = (env)=> {
   const devMode = env.mode ==='production'? false : true
   return {
+    optimization: devMode ? {}:{
+      minimizer: [
+        new UglifyJsPlugin({
+          cache: false,
+          parallel: true,
+          sourceMap: devMode // set to true if you want JS source maps
+        }),
+        new OptimizeCSSAssetsPlugin({})
+      ]
+    },
   entry: './src/index.js',
   mode:env.mode,
   module: {
@@ -56,7 +68,7 @@ module.exports = (env)=> {
   },
   output: {
     path: settings.publicPath,
-    filename: devMode ? `${outputBundleName}.js` : `${outputBundleName}.[hash].js`
+    filename: devMode ? `${outputBundleNamePrefix}.js` : `${outputBundleNamePrefix}.[hash].js`
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -67,7 +79,7 @@ module.exports = (env)=> {
       template: srcPathExtend("index.html")
   }),
   new MiniCssExtractPlugin({
-    filename: devMode ? `${outputBundleName}.css` : `style/${outputBundleName}.[hash].css`
+    filename: devMode ? `style/${outputBundleNamePrefix}.css` : `style/${outputBundleNamePrefix}.[hash].css`
   })
   ],
   
