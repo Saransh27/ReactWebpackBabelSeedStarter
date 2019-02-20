@@ -38,7 +38,17 @@ module.exports = (env)=> {
         use: ['babel-loader']
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader",
+            options: { minimize: !devMode }
+          }
+        ]
+      },
+      //image files
+      {
+        test: /\.(png|jpe?g|gif)$/,
         use: [
           {
             loader: 'file-loader',
@@ -46,11 +56,18 @@ module.exports = (env)=> {
           }
         ]
       },
+      //font files
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          'file-loader'
+        ]
+      },
        // CSS Files
        {
         test: /\.(css|scss)$/,
         use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
            'css-loader','sass-loader'],
       }
     ]
